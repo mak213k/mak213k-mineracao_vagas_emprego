@@ -1,0 +1,125 @@
+--CREATE DATABASE IF NOT EXISTS COLLECT_DATA;
+--USE EXISTS COLLECT_DATA;
+-- --------------------------------------------------------
+-- --------------------------------------------------------
+
+--CREATE DATABASE IF NOT EXISTS AUTOMACAO_SOCIAL_MEDIA;
+--USE AUTOMACAO_SOCIAL_MEDIA;
+
+--
+-- Banco de dados: `AUTOMACAO_SOCIAL_MEDIA`
+--
+--CREATE DATABASE IF NOT EXISTS `AUTOMACAO_SOCIAL_MEDIA` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
+--USE `AUTOMACAO_SOCIAL_MEDIA`;
+
+-- --------------------------------------------------------
+
+
+-- INÍCIO DOS SCRIPTS 
+
+
+DROP TABLE IF EXISTS COLLECT_DATA_AUTOMATION_SOCIAL_MEDIA;
+
+--------------------------------------------------------
+
+CREATE DATABASE IF NOT EXISTS COLLECT_DATA_AUTOMATION_SOCIAL_MEDIA;
+USE COLLECT_DATA_AUTOMATION_SOCIAL_MEDIA;
+
+-- --------------------------------------------------------
+
+
+CREATE TABLE JOB_CHANNELS(
+ID_JOB_CHANNELS INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+NAME VARCHAR(30) NOT NULL,
+CHANNEL VARCHAR(100) NOT NULL,
+STATUS BOOLEAN DEFAULT '0'
+);
+
+INSERT INTO JOB_CHANNELS(NAME, CHANNEL,STATUS) VALUES( 'indeed.com com filtro localidade Guarulhos','https://br.indeed.com/q-tecnologia-da-informa%C3%A7%C3%A3o-l-guarulhos,-sp-vagas.html?vjk=3091c1ebf339a053', 1 );
+INSERT INTO JOB_CHANNELS(NAME, CHANNEL,STATUS) VALUES( 'vagas.com.br com filtro localidade Guarulhos','https://www.vagas.com.br/vagas-de-tecnologia-da-informacao-em-guarulhos', 1 );
+INSERT INTO JOB_CHANNELS(NAME, CHANNEL,STATUS) VALUES( 'apinfo.com','https://www.apinfo.com/apinfo/inc/list4.cfm', 1 );
+
+--------------------------------------------------------
+
+
+CREATE TABLE `REGIME` (
+  `ID_REGIME` INT NOT NULL AUTO_INCREMENT,
+  `DESCRIPTION` VARCHAR(30),
+  PRIMARY KEY(ID_REGIME)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+INSERT INTO `regime`(DESCRIPTION) 
+VALUES
+    ('EMPREGADO CLT'),
+    ('PESSOA JURÍDICA'),
+    ('FREELANCER'),
+    ('ESTÁGIO'),
+    ('TERCEIRIZADO');
+
+  
+-- --------------------------------------------------------
+
+
+
+--
+-- Estrutura para tabela `JOB_AD`
+--
+
+CREATE TABLE `JOB_AD` (
+  `ID_JOB_AD` int(11) NOT NULL,
+  `REGIME` INT NULL,
+  `TITLE` VARCHAR(200) NOT NULL,
+  `LOCATION` VARCHAR(100) NOT NULL,
+  `MODALITY` ENUM('REMOTO','PRESENCIAL','HÍBRIDO'),
+  `MESSAGE` varchar(2200) DEFAULT NULL,
+  `INSERT_AT` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  `READ_AT` TIMESTAMP NULL,
+  `DELETED_AT` TIMESTAMP NULL,
+  PRIMARY KEY(ID_JOB_AD),
+  FOREIGN KEY(REGIME) REFERENCES REGIME(ID_REGIME)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Estrutura para tabela `client`
+--
+
+CREATE TABLE `client` (
+  `ID_CLIENT` int(11) NOT NULL,
+  `CLIENT_ID_FACEBOOK` int(11) NOT NULL,
+  `CLIENT_SECRET_FACEBOOK` int(11) NOT NULL,
+  `PAGE_ID_FACEBOOK` int(11) NOT NULL,
+  `ACCESS_TOKEN` varchar(500) DEFAULT NULL,
+  `READ_AT` TIMESTAMP NULL,
+  `INSERT_AT` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  `UPDATE_AT` TIMESTAMP NULL,
+  `DELETED_AT` TIMESTAMP NULL,
+  PRIMARY KEY(ID_CLIENT)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura para tabela `post`
+--
+
+CREATE TABLE `post` (
+  `ID_POST` int(11) NOT NULL AUTO_INCREMENT,
+  `ID_CLIENT` int(11) NOT NULL,
+  `TITLE` VARCHAR(200) NOT NULL,
+  `LOCATION` VARCHAR(100) NOT NULL,
+  `MODALITY` ENUM('REMOTO','PRESENCIAL','HÍBRIDO'),
+  `MESSAGE` varchar(2200) DEFAULT NULL,
+  `REVISED_AT` TIMESTAMP NULL,
+  `READ_AT` TIMESTAMP NULL,
+  `INSERT_AT` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  `UPDATE_AT` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  `DELETED_AT` TIMESTAMP NULL,
+  PRIMARY KEY(ID_POST)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- Insert para teste
+-- INSERT INTO POST(ID_CLIENT,LOCATION, MESSAGE, MODALITY, TITLE) VALUES(1,'TESTE','TESTE','TESTE', 'TITLE');
+
+-- FIM DO SCRIPT
+
+
